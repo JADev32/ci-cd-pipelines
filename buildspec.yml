@@ -2,23 +2,23 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      python: 3.13  # o 3.9, 3.10, etc. según tu necesidad
-    commands:
-      - echo "Instalando dependencias de Python..."
-      - pip install -r requirements.txt -t .
-
+    # Comandos para instalar dependencias si usas librerías adicionales
+    # Por ejemplo:
+    # commands:
+    #   - pip install -r requirements.txt -t .
+    discard-paths: yes # No necesitas este si tienes un requirements.txt
   build:
     commands:
-      - echo "Build completado - Verificando instalación..."
-      - python -c "import json; print('Python environment ready')"
-
+      # CodeBuild ejecutará el código de la Lambda, pero en este caso solo lo empaquetaremos
+      - echo Build started on `date`
   post_build:
     commands:
-      - echo "Empaquetando para despliegue..."
-      - zip -r deployment.zip . -x "*.git*" "*.DS_Store"
+      # Crea el paquete de despliegue (ZIP)
+      - echo Packaging deployment file...
+      - zip -r deploy_package.zip .
 
 artifacts:
   files:
-    - deployment.zip
-  discard-paths: no
+    # Define qué archivos se pasarán a la siguiente etapa (Deploy)
+    - deploy_package.zip
+  discard-paths: no # Conservar la estructura de archivos dentro del zip
