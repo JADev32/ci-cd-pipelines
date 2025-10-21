@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Starting build process..."
+  build:
+    commands:
+      - echo "Zipping source code..."
+      - zip -r deployment.zip index.js
+artifacts:
+  files:
+    - deployment.zip
