@@ -2,12 +2,23 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.13  # o 3.9, 3.10, etc. según tu necesidad
     commands:
-      - echo "Starting build process..."
+      - echo "Instalando dependencias de Python..."
+      - pip install -r requirements.txt -t .
+
   build:
     commands:
-      - echo "Zipping source code..."
-      - zip -r deployment.zip index.js
+      - echo "Build completado - Verificando instalación..."
+      - python -c "import json; print('Python environment ready')"
+
+  post_build:
+    commands:
+      - echo "Empaquetando para despliegue..."
+      - zip -r deployment.zip . -x "*.git*" "*.DS_Store"
+
 artifacts:
   files:
     - deployment.zip
+  discard-paths: no
